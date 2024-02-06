@@ -102,9 +102,9 @@ const select = {
         //prevent default action for event
         event.preventDefault();
         //find active product(product that has active class)
-        const activeProduct = document.querySelector('.product');
-        console.log('activeProduct:', activeProduct);
-        console.log(thisProduct.element);
+        const activeProduct = document.querySelector('.product.active');
+        //console.log('activeProduct:', activeProduct);
+        //console.log(thisProduct.element);
         //if there is active product and it's not thisProduct.element, remove class active from it
         if(activeProduct != null && activeProduct != thisProduct.element){
           activeProduct.classList.remove(classNames.menuProduct.wrapperActive);
@@ -119,7 +119,7 @@ const select = {
     initOrderForm(){
       const thisProduct = this;
 
-      console.log('initOrderForm:');
+      //console.log('initOrderForm:');
 
       thisProduct.form.addEventListener('submit', function(event){
         event.preventDefault();
@@ -140,10 +140,10 @@ const select = {
 
     processOrder(){
       const thisProduct = this;
-      console.log('processOrder');
+      //console.log('processOrder');
 
       const formData = utils.serializeFormToObject(thisProduct.form);
-      console.log('formData', formData);
+      //console.log('formData', formData);
 
       //set price to default price
       let price = thisProduct.data.price;
@@ -152,13 +152,13 @@ const select = {
       for(let paramId in thisProduct.data.params) {
         //determine param value, e.g. paramId = 'toppings;, param = { label: 'Toppings', type: 'checkboxes'...}
         const param = thisProduct.data.params[paramId];
-        console.log('paramId:', paramId, param);
+        //console.log('paramId:', paramId, param);
 
         //for every option in this category
         for(let optionId in param.options) {
           //determine option value, e.g. optionId = 'olives;, option = { label: 'Olives', price: 2, default: true}
           const option = param.options[optionId];
-          console.log('optionId', optionId, option);
+          //console.log('optionId', optionId, option);
 
           //check if there is param with a name of paramId in formData and if it includes optionId
           const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
@@ -177,7 +177,7 @@ const select = {
             }
           }
           const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId); 
-          console.log('optionImage:', optionImage);
+          //console.log('optionImage:', optionImage);
 
           if(optionImage){
             if(optionSelected){
@@ -195,6 +195,15 @@ const select = {
     }
 
   }
+
+  // class AmountWidget{
+  //   constructor(element){
+  //     const thisWidget = this;
+
+  //     console.log('AmountWidget:', thisWidget);
+  //     console.log('constructor arguments:', element);
+  //   }
+  // }
 
   const app = {
 
