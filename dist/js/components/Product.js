@@ -15,7 +15,7 @@ class Product{
       thisProduct.initAmountWidget();
       thisProduct.processOrder();
 
-      console.log('new Product:', thisProduct);
+      //console.log('new Product:', thisProduct);
     }
 
     renderInMenu(){
@@ -153,7 +153,7 @@ class Product{
       const thisProduct = this;
 
       thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
-      thisProduct.amountWidget.element.addEventListener('updated', function(event){
+      thisProduct.amountWidgetElem.addEventListener('updated', function(event){
         event.preventDefault();
         thisProduct.processOrder();
       });
