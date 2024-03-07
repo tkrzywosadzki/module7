@@ -7,6 +7,8 @@ import {utils} from '../utils.js';
 class Booking {
     constructor(element) {
         const thisBooking = this;
+
+        const selectedTable = [];
         
         thisBooking.render(element);
         thisBooking.initWidgets();
@@ -18,7 +20,7 @@ class Booking {
 
         const startDateParam = settings.db.dateStartParamKey + '=' + utils.dateToStr(thisBooking.datePicker.minDate);
         const endDateParam = settings.db.dateEndParamKey + '=' + utils.dateToStr(thisBooking.datePicker.maxDate);
-
+        
         const params = {
             bookings: [
                 startDateParam,
@@ -171,6 +173,7 @@ class Booking {
         thisBooking.dom.hourPicker = element.querySelector(select.widgets.hourPicker.wrapper);
 
         thisBooking.dom.tables = element.querySelectorAll(select.booking.tables);
+        thisBooking.dom.allTables = element.querySelector(select.booking.allTables);
 
     }
 
@@ -199,8 +202,63 @@ class Booking {
 
         thisBooking.dom.wrapper.addEventListener('updated', function(){
             thisBooking.updateDOM();
+            thisBooking.resetTables();
         })
+
+        thisBooking.dom.allTables.addEventListener('click', function(event){
+            thisBooking.initTables(event);
+        });
     }
+
+    initTables(event){
+        const thisBooking = this;
+
+        /*check if clicked on table */
+        const clickedElement = event.target;
+
+        if(!clickedElement.classList.contains(classNames.booking.table))
+            return;
+        
+        if(clickedElement.classList.contains(classNames.booking.tableBooked)){
+            alert('This table is already booked. Please select a different table');
+            return;
+        }
+
+        const clickedTable = clickedElement;
+        console.log('clickedTable', clickedTable);
+
+        /*check if theres already a selected table and if there is remove class .selected from it */
+        let tableId = clickedTable.getAttribute(settings.booking.tableIdAttribute);
+
+        console.log('tableId', tableId);
+    
+        if(thisBooking.selectedTable && thisBooking.selectedTable !== tableId){
+            const selectedTable = thisBooking.dom.allTables.querySelector(select.booking.selectedTable);
+            //console.log('selectedTable', selectedTable);
+            selectedTable.classList.remove(classNames.booking.selectTable);
+        }
+
+        /*add clicked table to thisBooking.selectedTable and add .selected class to it */
+        if(!clickedTable.classList.contains(classNames.booking.selectTable)){
+            thisBooking.selectedTable = tableId;
+            clickedTable.classList.add(classNames.booking.selectTable);
+        } else {
+
+            if(clickedTable.classList.contains(classNames.booking.selectTable)){
+                clickedTable.classList.remove(classNames.booking.selectTable);
+            }
+        }
+            //console.log('thisBooking.selectedTable', thisBooking.selectedTable);
+    }
+
+    resetTables() {
+        const thisBooking = this;
+
+        for(let table of thisBooking.dom.tables){
+            table.classList.remove(classNames.booking.selectTable);
+        }
+    }
+    
 }
 
 export default Booking;
