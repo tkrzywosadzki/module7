@@ -96,11 +96,14 @@ export const settings = {
     cart: {
     defaultDeliveryFee: 20,
     },
+    booking: {
+      tableIdAttribute: 'data-table',
+    },
     db: {
     url: '//localhost:3131',
     products: 'products',
     orders: 'orders',
-    booking: 'bookings',
+    bookings: 'bookings',
     events: 'events',
     dateStartParamKey: 'date_gte',
     dateEndParamKey: 'date_lte',
