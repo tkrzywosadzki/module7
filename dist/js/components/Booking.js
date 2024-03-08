@@ -8,7 +8,7 @@ class Booking {
     constructor(element) {
         const thisBooking = this;
 
-        const selectedTable = [];
+        thisBooking.selectedTable = null;
         
         thisBooking.render(element);
         thisBooking.initWidgets();
@@ -245,8 +245,10 @@ class Booking {
     
         if(thisBooking.selectedTable && thisBooking.selectedTable !== tableId){
             const selectedTable = thisBooking.dom.allTables.querySelector(select.booking.selectedTable);
-            //console.log('selectedTable', selectedTable);
-            selectedTable.classList.remove(classNames.booking.selectTable);
+            console.log('selectedTable', selectedTable);
+            if(selectedTable !== null){
+                selectedTable.classList.remove(classNames.booking.selectTable);
+            }
         }
 
         /*add clicked table to thisBooking.selectedTable and add .selected class to it */
@@ -274,15 +276,15 @@ class Booking {
     selectStarters(){
         const thisBooking = this;
 
-        thisBooking.selectedStarters = [];
+        const selectedStarters = [];
 
         for(let starter of thisBooking.dom.starters) {
             if(starter.checked) {
-                thisBooking.selectedStarters.push(starter.value);
+                selectedStarters.push(starter.value);
             }
         }
 
-        return thisBooking.selectedStarters;
+        return selectedStarters;
     }
 
     sendBooking(){
@@ -291,7 +293,7 @@ class Booking {
         const url = settings.db.url + '/' + settings.db.bookings;
 
         const selectedStarters = thisBooking.selectStarters();
-  
+        
         const payload = {
           date: thisBooking.datePicker.value,
           hour: thisBooking.hourPicker.value,
@@ -319,6 +321,8 @@ class Booking {
                     payload.duration,
                     payload.table
                 );
+                thisBooking.updateDOM();
+                thisBooking.resetTables();
                 console.log('table booked', payload);
             })
           
